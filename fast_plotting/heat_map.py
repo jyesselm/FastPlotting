@@ -63,9 +63,9 @@ class FPHeatMap(object):
 		plt.show()
 
 	def get_default_options(self):
-		self.options = {'xlabel': "Xlabel", 
-						'ylabel': "Ylabel",
-						'title' : "Title"}
+		self.options = {'xlabel': None, 
+						'ylabel': None,
+						'title' : None}
 
 	def set_options(self,user_options):
 
@@ -110,17 +110,8 @@ def randtest2():
 	y = np.random.randn(8873)
 	
 	heatmap,x_axis,y_axis = points_to_heatmap(x,y,bins=10)
-	
-	fphm = 	FPHeatMap(xlabel="It's Random!")
+	fphm = 	FPHeatMap(1,xlabel="It's Random!")
 	fphm.show(heatmap,x_axis,y_axis)
-
-	sys.exit()
-
-	fig = plt.figure(1)
-	plt.imshow(heatmap,interpolation="nearest",aspect=1)
-	plt.xticks(range(len(x_axis)),x_axis,rotation=90)
-	plt.yticks(range(len(y_axis)),y_axis)
-	plt.show()
 	sys.exit()
 
 	fphm = 	FPHeatMap(1, x, y,xlabel="It's Random!")
@@ -138,7 +129,7 @@ def filetest():
 
 
 if __name__ == '__main__':
-	filetest()
+	randtest2()
 	sys.exit()
 
 
