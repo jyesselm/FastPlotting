@@ -23,26 +23,24 @@ def parse_args():
 	args = parser.parse_args()
 	return args
 
-def points_to_heatmap(x,y,weights=None,bins=10):
-	if not weights:
-		heatmap,xedges,yedges = np.histogram2d(x,y, bins=bins)
-	else:
-		heatmap,xedges,yedges = np.histogram2d(x,y, weights=weights,normed=True, bins=bins)
+class HeatMap(object):
+	def __init__(self,self,index=111):
+		self.pindex = 0
+		self.ax = plt.subplot(index,aspect='equal')
+		self.options = self.get_default_options()
 
-	x_axis_str = ["%.2f" % round(a,2) for a in xedges[:-1]]
-	y_axis_str = ["%.2f" % round(a,2) for a in yedges[:-1]]
+		self.datas = []
 
-	return heatmap,x_axis_str,y_axis_str
+	def setup(self,index):
+		self.ax = plt.subplot(index,aspect='equal')
 
-		
-class FPHeatMap(object):
-	def __init__(self,fig_index=1,**options):
-		self.get_default_options()
-		self.set_options(options)
+	def plot(self,points=None,weights=None,heatmap=None,x_axis=None,y_axis=None):
+		if points:
+			heatmap,x_axis_str,y_axis_str = points_to_heatmap(points,weights)
 
 
-		self.fig_index=fig_index
-		self.map = None
+
+
 
 	def setup(self,heatmap,x_axis,y_axis):
 		
@@ -63,9 +61,11 @@ class FPHeatMap(object):
 		plt.show()
 
 	def get_default_options(self):
-		self.options = {'xlabel': None, 
-						'ylabel': None,
-						'title' : None}
+		options = {'xlabel': None, 
+				   'ylabel': None,
+				   'title' : None}
+
+		return options
 
 	def set_options(self,user_options):
 

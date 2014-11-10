@@ -1,47 +1,57 @@
 
-import matplotlib.pyplot as plt
-from pylab import rcParams
 
-from   scatter_plot import *
+import numpy as np 
+import matplotlib.pyplot as plt
+
+from   plot_types    import *
+from   heat_map_plot import *
+
 
 class Plot(object):
-	def __init__(self):
-		self.subplots = []
+	def __init__(self,index=111):
+		self.pindex = 0
+		self.ax = plt.subplot(index,aspect='equal')
+		self.datas = []
 
-	def add_subplot(self,subplot):
-		self.subplots.append(subplot)
+	def add_heatmap(self,points=None,weights=None,heatmap=None,x_axis=None,y_axis=None,**options):
+		if points != None:
+			heatmap,x_axis,y_axis = points_to_heatmap(points,weights)
 
-	def setup_orientation(self):
-		if len(self.subplots) == 2:
-			self.subplots[0].setup(121)
-			self.subplots[1].setup(122)
-		if len(self.subplots) == 3:
-			self.subplots[0].setup(131)
-			self.subplots[1].setup(132)
-			self.subplots[2].setup(133)
-		if len(self.subplots) == 4:
-			self.subplots[0].setup(221)
-			self.subplots[1].setup(222)
-			self.subplots[2].setup(223)
-			self.subplots[3].setup(224)
+		options = HeatMapOptions()
+		data = HeatMapData(options,heatmap,x_axis,y_axis)
+		self.datas.append(data)
+
+	def add_scatter(self):
+		pass
+
+	def plot_data(self):
+		for d in self.datas:
+			if d.type == PlotType.HEATMAP: self.plot_heatmap(d)
+
+
+	def plot_heatmap(self,data):
+		plt.rc("font", size=16)
+		self.ax.imshow(data.heatmap,interpolation="nearest")
+		self.ax.set_xticks(range(len(data.x_axis)))
+		self.ax.set_yticks(range(len(data.y_axis)))
+		self.ax.set_xticklabels(data.x_axis,rotation=90)
+		self.ax.set_yticklabels(data.y_axis)
+		#self.ax.set_xlabel("Test",fontsize=24)
+
 
 	def show(self):
-
-		self.setup_orientation()
-
-		for subplot in self.subplots:
-			subplot.plot_data()
-
+		self.plot_data()
+		plt.tight_layout()
 		plt.show()
 
 
 def test():
-	#rcParams['figure.figsize'] = 11, 3.4
+	points = np.random.random_sample((1000,2))	
+
 	plot = Plot()
-	plot.add_subplot(get_rand_scatter_plot())
-	plot.add_subplot(get_rand_scatter_plot())
-	plot.add_subplot(get_rand_scatter_plot())
+	plot.add_heatmap(points)
 	plot.show()
+
 
 if __name__ == '__main__':
 	test()
