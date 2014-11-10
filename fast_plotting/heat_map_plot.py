@@ -3,7 +3,8 @@
 import random
 import numpy as np 
 
-from   plot_types import *
+from   plot_types  import *
+from   plot_base   import *
 
 class HeatMapData(object):
 	def __init__(self,options,heatmap,x_axis,y_axis):
@@ -14,7 +15,12 @@ class HeatMapData(object):
 		self.type    = PlotType.HEATMAP
 
 def HeatMapOptions():
-	return {}
+	options = {
+
+	}
+
+	for k,v in BaseOptions().iteritems(): options[k]=v
+	return options
 
 
 def points_to_heatmap(points,weights=None,bins=10):
